@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Seats | MovieMagic</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #e6f9ec;
+      color: #1c3a13;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2cb737;
+      margin-bottom: 20px;
+    }
+
+    .screen {
+      background: #e6f9ec;
+      color: #2cb737;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 0 auto 30px;
+      width: 300px;
+      font-weight: bold;
+    }
+
+    .seats-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .seat-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .seat {
+      width: 36px;
+      height: 36px;
+      background: #e6f9ec;
+      color: #1c3a13;
+      border: 1px solid #2cb737;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.3s;
+    }
+
+    .seat:hover {
+      background: #2cb737;
+      color: #fff;
+      box-shadow: 0 0 10px #2cb737;
+    }
+
+    .seat.selected {
+      background: #2cb737;
+      color: #fff;
+      box-shadow: 0 0 10px #2cb737;
+    }
+
+    .booking-summary {
+      margin-top: 30px;
+    }
+
+    .confirm-btn {
+      margin-top: 20px;
+      background: #2cb737;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .confirm-btn:hover {
+      background: white;
+      color: #2cb737;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Select Your Seats</h1>
+
+  <div class="screen">SCREEN</div>
+
+  <form action="{{ url_for('seatmap') }}" method="POST" onsubmit="return validateSeats()">
+    <div class="seats-container">
+      {% for row in ['D', 'C', 'B', 'A'] %}
+      <div class="seat-row">
+        {% for num in range(1, 9) %}
+        <div class="seat" onclick="toggleSeat(this)" data-seat="{{ row }}{{ num }}">{{ row }}{{ num }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="booking-summary">
+      <p>Selected Seats: <span id="selected-seats">None</span></p>
+      <p>Total Price: ₹<span id="total-price">0</span></p>
+    </div>
+
+    <input type="hidden" name="seat" id="seat-input" required>
+    <input type="hidden" name="date" value="{{ session['pending_booking']['date'] }}">
+    <input type="hidden" name="time" value="{{ session['pending_booking']['time'] }}">
+    <input type="hidden" name="movie" value="{{ session['pending_booking']['movie'] }}">
+
+    <button class="confirm-btn" type="submit">Confirm and Pay</button>
+  </form>
+
+  <script>
+    const seatPrice = 150;
+    const selected = new Set();
+
+    function toggleSeat(el) {
+      const seat = el.dataset.seat;
+      el.classList.toggle('selected');
+
+      if (selected.has(seat)) {
+        selected.delete(seat);
+      } else {
+        selected.add(seat);
+      }
+
+      const seatList = Array.from(selected).join(', ');
+      document.getElementById('selected-seats').innerText = seatList || 'None';
+      document.getElementById('total-price').innerText = selected.size * seatPrice;
+      document.getElementById('seat-input').value = seatList;
+    }
+
+    function validateSeats() {
+      if (selected.size === 0) {
+        alert("❗ Please select at least one seat before proceeding.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+
+</body>
+</html>

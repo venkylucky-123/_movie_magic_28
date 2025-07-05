@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieMagic | Book Tickets</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #e6f9ec;
+      color: #1c3a13;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .booking-container {
+      display: flex;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(44, 183, 55, 0.3);
+      max-width: 1000px;
+      width: 95%;
+    }
+
+    .poster-preview {
+      flex: 1;
+      background: #e6f9ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .poster-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-right: 2px solid #2cb737;
+    }
+
+    .form-area {
+      flex: 1;
+      padding: 40px;
+      color: #1c3a13;
+    }
+
+    .form-area h2 {
+      margin-bottom: 20px;
+      color: #2cb737;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: #2cb737;
+    }
+
+    .date-options, .time-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-btn {
+      background: #e6f9ec;
+      color: #1c3a13;
+      border: 2px solid #2cb737;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    .option-btn:hover,
+    .option-btn.active {
+      background: #2cb737;
+      color: #fff;
+      box-shadow: 0 0 10px #2cb737;
+    }
+
+    input[type="hidden"] {
+      display: none;
+    }
+
+    .seat-btn {
+      padding: 14px;
+      margin-top: 30px;
+      border: none;
+      border-radius: 30px;
+      background: #2cb737;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .seat-btn:hover {
+      background: #e6f9ec;
+      color: #2cb737;
+      border: 2px solid #2cb737;
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <div class="poster-preview">
+      <img src="{{ url_for('static', filename='posters/movie1.jpg') }}" alt="{{ movie }}" />
+    </div>
+
+    <div class="form-area">
+      <h2>Book for {{ movie }}</h2>
+      <form method="POST">
+        <label>Select Date</label>
+        <div class="date-options">
+          <button type="button" class="option-btn" onclick="selectDate(this, '2025-06-27')">Jun 27</button>
+          <button type="button" class="option-btn" onclick="selectDate(this, '2025-06-28')">Jun 28</button>
+          <button type="button" class="option-btn" onclick="selectDate(this, '2025-06-29')">Jun 29</button>
+        </div>
+        <input type="hidden" id="date" name="date" required>
+
+        <label>Select Time</label>
+        <div class="time-options">
+          <button type="button" class="option-btn" onclick="selectTime(this, '10:00')">10:00 AM</button>
+          <button type="button" class="option-btn" onclick="selectTime(this, '13:00')">1:00 PM</button>
+          <button type="button" class="option-btn" onclick="selectTime(this, '16:00')">4:00 PM</button>
+          <button type="button" class="option-btn" onclick="selectTime(this, '19:00')">7:00 PM</button>
+        </div>
+        <input type="hidden" id="time" name="time" required>
+
+        <button type="submit" class="seat-btn">Select Seat and Book</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function selectDate(button, value) {
+      document.querySelectorAll('.date-options .option-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById('date').value = value;
+    }
+
+    function selectTime(button, value) {
+      document.querySelectorAll('.time-options .option-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById('time').value = value;
+    }
+  </script>
+</body>
+</html>

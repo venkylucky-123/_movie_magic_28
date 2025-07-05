@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: #e6f9ec;
+            color: #1c3a13;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(44, 183, 55, 0.1);
+            padding: 40px 60px;
+            margin: 60px auto;
+            max-width: 400px;
+        }
+        h2 {
+            color: #2cb737;
+        }
+        input[type="email"], input[type="password"] {
+            background: #e6f9ec;
+            color: #1c3a13;
+            border: 1px solid #2cb737;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        button[type="submit"] {
+            background: #2cb737;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background: #e6f9ec;
+            color: #2cb737;
+        }
+        a {
+            color: #2cb737;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Create an Account 🍿</h2>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already a member? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+</body>
+</html>
